@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamelneon - The Light Journey</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(0,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: neonGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from { filter: drop-shadow(0 0 10px #00ffff); }
+            to { filter: drop-shadow(0 0 30px #ff00ff); }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff006e, #8338ec);
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 110, 0.4);
+        }
+
+        /* River Timeline */
+        .river-container {
+            position: relative;
+            padding: 100px 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,255,255,0.05) 50%, transparent 100%);
+        }
+
+        .river {
+            width: 6px;
+            background: linear-gradient(to bottom, #00ffff, #ff00ff);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%;
+            border-radius: 3px;
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 80px 0;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding: 0 60px;
+        }
+
+        .timeline-image {
+            flex: 1;
+            position: relative;
+            height: 300px;
+            background: linear-gradient(45deg, rgba(255,0,110,0.1), rgba(131,56,236,0.1));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 60px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .timeline-image::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+            border-radius: 22px;
+            z-index: -1;
+        }
+
+        .timeline-image img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 18px;
+        }
+
+        .placeholder-neon {
+            width: 200px;
+            height: 100px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background: #00ffff;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px #00ffff;
+        }
+
+        /* Co-Creation Section */
+        .co-creation {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .co-creation h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #ff006e, #8338ec);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .co-creation-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(0,255,255,0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 15px rgba(255,0,255,0.3);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .slots-remaining {
+            background: linear-gradient(45deg, #ff006e, #8338ec);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Email Signup */
+        .email-signup {
+            background: rgba(0,0,0,0.3);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .email-form {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(0,255,255,0.3);
+            border-radius: 25px;
+            color: #fff;
+        }
+
+        .email-submit {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Waterfall Footer */
+        .waterfall {
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,255,255,0.1) 100%);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .private-link {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .private-link:hover {
+            opacity: 1;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .journey-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 40px 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content,
+            .timeline-image {
+                margin: 10px 0;
+                padding: 0 20px;
+            }
+
+            .journey-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>KAMELNEON</h1>
+            <p>Where light meets legend. Every creation tells a story.</p>
+            <a href="#journey" class="cta-button">Begin the Journey</a>
+            <a href="#co-create" class="cta-button">Co-Create With Me</a>
+        </div>
+    </section>
+
+    <!-- River Timeline -->
+    <section id="journey" class="river-container">
+        <div class="river"></div>
+        
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h3>The First Spark (2021)</h3>
+                <p>It all started with a birthday gift - a custom Monza track light for a friend. One post on r/formula1 changed everything. The community's love was overwhelming.</p>
+            </div>
+            <div class="timeline-image">
+                <div class="placeholder-neon">F1 Monza Track</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h3>The Fandom Explosion</h3>
+                <p>From Formula 1 to Zelda, Marvel to Pokémon. Each creation sparked joy in passionate communities. Hundreds of upvotes, thousands of comments.</p>
+            </div>
+            <div class="timeline-image">
+                <div class="placeholder-neon">Hylian Shield</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h3>The Philosophy Emerges</h3>
+                <p>"What you give is what you get." Giveaways became more than marketing - they became a movement of spreading light and uplifting messages.</p>
+            </div>
+            <div class="timeline-image">
+                <div class="placeholder-neon">Infinity Gauntlet</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h3>The Technical Revolution</h3>
+                <p>Mastering 3D printing, LED placement, and silicone diffusion. Creating authentic neon aesthetics without the fragility of glass.</p>
+            </div>
+            <div class="timeline-image">
+                <div class="placeholder-neon">Custom Logo</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <h3>The Community Legacy</h3>
+                <p>Hundreds of lights given away. Thousands of smiles shared. A philosophy that light creates light, spreading across the world.</p>
+            </div>
+            <div class="timeline-image">
+                <div class="placeholder-neon">Triforce Light</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey Stats -->
+    <div class="journey-stats">
+        <div class="stat">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Lights Created</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Giveaways Held</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Smiles Spread</div>
+        </div>
+    </div>
+
+    <!-- Co-Creation Section -->
+    <section id="co-create" class="co-creation">
+        <h2>Co-Create Your Legend</h2>
+        <p style="margin-bottom: 30px; opacity: 0.8;">Let's build something extraordinary together. Your vision, my craft, our legacy.</p>
+        
+        <div class="slots-remaining">🔥 Only 10 Co-Creation Slots Available 🔥</div>
+        
+        <form class="co-creation-form">
+            <div class="form-group">
+                <label for="name">Your Name *</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="concept">Your Vision/Concept *</label>
+                <textarea id="concept" name="concept" placeholder="Describe your dream neon light. What story should it tell? What emotions should it evoke?" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="size">Preferred Size</label>
+                <select id="size" name="size">
+                    <option value="">Select size...</option>
+                    <option value="small">Small (15-25cm)</option>
+                    <option value="medium">Medium (25-40cm)</option>
+                    <option value="large">Large (40-60cm)</option>
+                    <option value="custom">Custom Size</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="colors">Color Preferences</label>
+                <input type="text" id="colors" name="colors" placeholder="e.g., Electric blue, Hot pink, Warm white...">
+            </div>
+            
+            <div class="form-group">
+                <label for="story">Personal Story (Optional)</label>
+                <textarea id="story" name="story" placeholder="Why is this piece special to you? What's the story behind your vision?"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="budget">Budget Range</label>
+                <select id="budget" name="budget">
+                    <option value="">Select range...</option>
+                    <option value="150-250">$150 - $250</option>
+                    <option value="250-400">$250 - $400</option>
+                    <option value="400-600">$400 - $600</option>
+                    <option value="600+">$600+</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="cta-button" style="width: 100%; margin-top: 20px;">
+                Begin Co-Creation Journey
+            </button>
+        </form>
+    </section>
+
+    <!-- Email Signup -->
+    <section class="email-signup">
+        <h3 style="margin-bottom: 20px;">Join the Light Movement</h3>
+        <p style="margin-bottom: 30px; opacity: 0.8;">Get exclusive access to new creations, behind-the-scenes content, and early opportunities.</p>
+        
+        <form class="email-form">
+            <input type="email" class="email-input" placeholder="Enter your email..." required>
+            <button type="submit" class="email-submit">Join</button>
+        </form>
+    </section>
+
+    <!-- Waterfall Footer -->
+    <footer class="waterfall">
+        <p style="margin-bottom: 20px; opacity: 0.6;">Every light has found its home. Every story has been told.</p>
+        <p style="margin-bottom: 40px; opacity: 0.8;">But some legends deserve special collectors...</p>
+        
+        <a href="private-collection.html" class="private-link">Browse the private collection →</a>
+        
+        <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <p style="opacity: 0.5; font-size: 0.8rem;">© 2025 Kamelneon. Spreading light, one creation at a time.</p>
+        </div>
+    </footer>
+
+    <script>
+        // GSAP ScrollTrigger animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate timeline items
+        gsap.utils.toArray('.timeline-item').forEach((item, index) => {
+            gsap.fromTo(item, 
+                {
+                    opacity: 0,
+                    y: 50,
+                    scale: 0.9
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // Animate stats
+        gsap.utils.toArray('.stat-number').forEach((stat) => {
+            gsap.fromTo(stat,
+                { scale: 0.5, opacity: 0 },
+                {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "back.out(1.7)",
+                    scrollTrigger: {
+                        trigger: stat,
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // Form handling
+        document.querySelector('.co-creation-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Here you would typically send to your backend/email service
+            console.log('Co-creation request:', data);
+            
+            // Show success message
+            alert('Thank you! Your co-creation request has been received. I\'ll contact you within 24 hours to discuss your vision!');
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Email signup
+        document.querySelector('.email-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = this.querySelector('.email-input').value;
+            console.log('Email signup:', email);
+            
+            alert('Welcome to the Light Movement! Check your email for a special surprise.');
+            this.reset();
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Dynamic slot counter (you can connect this to real data)
+        let slotsRemaining = 10;
+        function updateSlots() {
+            const slotsElement = document.querySelector('.slots-remaining');
+            if (slotsElement) {
+                slotsElement.innerHTML = `🔥 Only ${slotsRemaining} Co-Creation Slots Available 🔥`;
+            }
+        }
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>

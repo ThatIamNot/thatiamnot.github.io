@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giveaways - Spreading Light | Kamelneon</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0514 0%, #1e0a3e 50%, #0f1b3c 100%);
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(15px);
+            padding: 15px 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,215,0,0.3);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoGlow 2s infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 10px #ffd700); }
+            to { filter: drop-shadow(0 0 20px #ffd700); }
+        }
+
+        .back-link {
+            color: #ffd700;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+            text-shadow: 0 0 15px #ffd700;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(255,215,0,0.15) 0%, transparent 70%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g" cx="50%" cy="50%"><stop offset="0%" style="stop-color:rgba(255,215,0,0.1)"/><stop offset="100%" style="stop-color:transparent"/></radialGradient></defs><circle cx="20" cy="30" r="2" fill="url(%23g)"><animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="20" r="1.5" fill="url(%23g)"><animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="1s"/></circle><circle cx="30" cy="70" r="1" fill="url(%23g)"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="2s"/></circle><circle cx="70" cy="80" r="2.5" fill="url(%23g)"><animate attributeName="opacity" values="0;1;0" dur="5s" repeatCount="indefinite" begin="0.5s"/></circle></svg>') repeat;
+            opacity: 0.6;
+            animation: sparkle 20s linear infinite;
+        }
+
+        @keyframes sparkle {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(100px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: heroGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            from { filter: drop-shadow(0 0 20px #ffd700); }
+            to { filter: drop-shadow(0 0 40px #ffed4e); }
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-style: italic;
+            color: #ffd700;
+        }
+
+        .philosophy {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
+            padding: 20px 30px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffd700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* Active Giveaways Section */
+        .active-giveaways {
+            padding: 100px 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 0 20px;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .giveaway-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .giveaway-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 25px;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .giveaway-item::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+            border-radius: 27px;
+            z-index: -1;
+            animation: borderGlow 4s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1); }
+            25% { background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #ffd700); }
+            50% { background: linear-gradient(45deg, #4ecdc4, #45b7d1, #ffd700, #ff6b6b); }
+            75% { background: linear-gradient(45deg, #45b7d1, #ffd700, #ff6b6b, #4ecdc4); }
+            100% { background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1); }
+        }
+
+        .giveaway-item:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(255,215,0,0.2);
+        }
+
+        .giveaway-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .status-live {
+            background: linear-gradient(45deg, #ff006e, #ff4757);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: liveAnimation 2s infinite;
+        }
+
+        @keyframes liveAnimation {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,0,110,0.5); }
+        }
+
+        .status-upcoming {
+            background: linear-gradient(45deg, #3742fa, #5352ed);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .giveaway-image {
+            height: 300px;
+            background: linear-gradient(45deg, rgba(255,215,0,0.1), rgba(255,107,107,0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .giveaway-art {
+            width: 280px;
+            height: 140px;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            font-size: 1.1rem;
+            animation: prizeGlow 3s infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes prizeGlow {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.02); filter: brightness(1.1); }
+        }
+
+        .giveaway-content {
+            padding: 40px;
+        }
+
+        .giveaway-title {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .giveaway-description {
+            margin-bottom: 25px;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .giveaway-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255,215,0,0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-number {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffd700;
+            display: block;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+        .participate-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            border: none;
+            padding: 18px;
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .participate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255,215,0,0.4);
+        }
+
+        .participate-btn:disabled {
+            background: linear-gradient(45deg, #666, #888);
+            cursor: not-allowed;
+            color: #ccc;
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .countdown-item {
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 10px;
+            min-width: 50px;
+            text-align: center;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+
+        .countdown-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        /* Past Winners Section */
+        .past-winners {
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,107,107,0.05));
+            padding: 100px 0;
+            margin-top: 80px;
+        }
+
+        .winners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .winner-card {
+            background: rgba(255,255,255,0.03);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,215,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .winner-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,215,0,0.5);
+        }
+
+        .winner-prize {
+            width: 80px;
+            height: 40px;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            border-radius: 10px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            font-size: 0.8rem;
+        }
+
+        .winner-name {
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .winner-location {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Community Rules */
+        .community-rules {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .rules-card {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,215,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .rules-card h3 {
+            color: #ffd700;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rules-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .rules-list li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+        }
+
+        /* Newsletter Signup */
+        .newsletter {
+            background: linear-gradient(45deg, rgba(255,215,0,0.1), rgba(255,107,107,0.1));
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 15px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .newsletter-submit {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            color: #ffd700;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 15px #ffd700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .giveaway-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .social-links {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">KAMELNEON</div>
+            <a href="#" class="back-link" onclick="history.back()">← Back to Gallery</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Spreading Light</h1>
+            <p class="subtitle">What you give is what you get ✨</p>
+            <div class="philosophy">
+                "I believe in bringing a little light to this world, one creation at a time"
+            </div>
+            
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-number">200+</span>
+                    <span class="stat-label">Lights Given Away</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">50k+</span>
+                    <span class="stat-label">Smiles Created</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">25</span>
+                    <span class="stat-label">Communities Blessed</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Active Giveaways -->
+    <section class="active-giveaways">
+        <div class="section-header">
+            <h2>Current Light Missions</h2>
+            <p style="opacity: 0.8; font-size: 1.1rem;">Every week, magic happens. Join the movement.</p>
+        </div>
+
+        <div class="giveaway-grid">
+            <!-- Active Giveaway 1 -->
+            <div class="giveaway-item">
+                <div class="giveaway-status">
+                    <div class="status-live">🔴 LIVE NOW</div>
+                </div>
+                <div class="giveaway-image">
+                    <div class="giveaway-art">Master Sword Zelda</div>
+                </div>
+                <div class="giveaway-content">
+                    <h3 class="giveaway-title">The Hero's Blade Awaits</h3>
+                    <p class="giveaway-description">
+                        The Master Sword that banishes darkness is looking for its chosen hero. This isn't just a giveaway - it's destiny calling.
+                    </p>
+                    
+                    <div class="giveaway-details">
+                        <div class="detail-item">
+                            <span class="detail-number">247</span>
+                            <span class="detail-label">Entries</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-number">18h</span>
+                            <span class="detail-label">Remaining</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-number">FREE</span>
+                            <span class="detail-label">Worldwide Ship</span>
+                        </div>
+                    </div>
+
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="hours1">18</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="minutes1">23</span>
+                            <span class="countdown-label">Minutes</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="seconds1">45</span>
+                            <span class="countdown-label">Seconds</span>
+                        </div>
+                    </div>
+
+                    <button class="participate-btn" onclick="joinGiveaway('zelda')">
+                        Join the Quest on Reddit
+                    </button>
+                </div>
+            </div>
+
+            <!-- Upcoming Giveaway -->
+            <div class="giveaway-item">
+                <div class="giveaway-status">
+                    <div class="status-upcoming">⏱️ COMING FRIDAY</div>
+                </div>
+                <div class="giveaway-image">
+                    <div class="giveaway-art">F1 Silverstone Track</div>
+                </div>
+                <div class="giveaway-content">
+                    <h3 class="giveaway-title">The Home of British Racing</h3>
+                    <p class="giveaway-description">
+                        Silverstone - where legends are born and dreams take flight. This historic circuit deserves a special home.
+                    </p>
+                    
+                    <div class="giveaway-details">
+                        <div class="detail-item">
+                            <span class="detail-number">r/F1</span>
+                            <span class="detail-label">Community</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-number">48h</span>
+                            <span class="detail-label">Duration</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-number">2</span>
+                            <span class="detail-label">Winners</span>
+                        </div>
+                    </div>
+
+                    <button class="participate-btn" disabled>
+                        Get Notified When Live
+                    </button>
+                </div>
+            </div>
+
+            <!-- Past Success -->
+            <div class="giveaway-item">
+                <div class="giveaway-status">
+                    <div style="background: linear-gradient(45deg, #2ed573, #1dd1a1); color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;">
+                        ✅ COMPLETED
+                    </div>
+                </div>
+                <div class="giveaway-image">
+                    <div class="giveaway-art">Infinity Gauntlet</div>
+                </div>
+                <div class="giveaway-content">
+                    <h3 class="giveaway-title">Power Found Its Home</h3>
+                    <p class="giveaway-description">
+                        The Infinity Gauntlet has chosen its wielder! Congratulations to u/MarvelFan2024 from Canada! ✨
+                    </p>
+                    
+                    <div class="giveaway-details">
+                        <div class="detail-item">
+                            <span class="detail-number">1,247</span>
+                            <span class="detail-label">Total Entries</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-number">24h</span>
+                            <span class="detail-label">Record Time</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-number">$0</span>
+                            <span class="detail-label">Cost to Win</span>
+                        </div>
+                    </div>
+
+                    <button class="participate-btn" style="background: linear-gradient(45deg, #2ed573, #1dd1a1);">
+                        See Winner's Joy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Past Winners -->
+    <section class="past-winners">
+        <div class="section-header">
+            <h2>Light Bearers Wall of Fame</h2>
+            <p style="opacity: 0.8;">These amazing people now carry the light forward</p>
+        </div>
+
+        <div class="winners-grid">
+            <div class="winner-card">
+                <div class="winner-prize">Triforce</div>
+                <div class="winner-name">u/ZeldaMaster91</div>
+                <div class="winner-location">🇺🇸 Texas, USA</div>
+                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 10px; font-style: italic;">
+                    "It's more beautiful than I imagined! My gaming room is now complete!"
+                </p>
+            </div>
+
+            <div class="winner-card">
+                <div class="winner-prize">Monaco</div>
+                <div class="winner-name">u/F1Fanatic2023</div>
+                <div class="winner-location">🇬🇧 London, UK</div>
+                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 10px; font-style: italic;">
+                    "The attention to detail is incredible. Thank you for spreading joy!"
+                </p>
+            </div>
+
+            <div class="winner-card">
+                <div class="winner-prize">Charizard</div>
+                <div class="winner-name">u/PokemonTrainer99</div>
+                <div class="winner-location">🇨🇦 Toronto, Canada</div>
+                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 10px; font-style: italic;">
+                    "My childhood dream came true. This will be treasured forever!"
+                </p>
+            </div>
+
+            <div class="winner-card">
+                <div class="winner-prize">Dice Set</div>
+                <div class="winner-name">u/DungeonMaster</div>
+                <div class="winner-location">🇩🇪 Berlin, Germany</div>
+                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 10px; font-style: italic;">
+                    "Perfect for our D&D nights. The whole party loves it!"
+                </p>
+            </div>
+
+            <div class="winner-card">
+                <div class="winner-prize">Rocket League</div>
+                <div class="winner-name">u/RocketPlayer2024</div>
+                <div class="winner-location">🇦🇺 Sydney, Australia</div>
+                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 10px; font-style: italic;">
+                    "What a save! Both in-game and in real life!"
+                </p>
+            </div>
+
+            <div class="winner-card">
+                <div class="winner-prize">Air Bending</div>
+                <div class="winner-name">u/AvatarFan2022</div>
+                <div class="winner-location">🇯🇵 Tokyo, Japan</div>
+                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 10px; font-style: italic;">
+                    "The light brings balance to my space. Arigato!"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Rules -->
+    <section class="community-rules">
+        <div class="rules-card">
+            <h3>How the Magic Works</h3>
+            <ul class="rules-list">
+                <li>All giveaways are 100% FREE - no purchase necessary, ever</li>
+                <li>Winners selected randomly using RedditRaffler for complete transparency</li>
+                <li>Worldwide shipping is ALWAYS
